@@ -1,0 +1,10 @@
+/*.js
+  Content-Type: application/javascript
+/*.mjs
+  Content-Type: application/javascript
+/*.ts
+  Content-Type: application/typescript
+/*.css
+  Content-Type: text/css
+/*.svg
+  Content-Type: image/svg+xml
