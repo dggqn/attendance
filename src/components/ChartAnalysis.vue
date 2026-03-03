@@ -205,7 +205,7 @@ const barOption = computed(() => ({
 const lineOption = computed(() => {
   // 计算每天的考勤率
   const dates = store.chartData.dates;
-  const rates = dates.map((date, index) => {
+  const rates = dates.map((_date, index) => {
     const normal = store.chartData.normalCount[index] || 0;
     const late = store.chartData.lateCount[index] || 0;
     const absent = store.chartData.absentCount[index] || 0;

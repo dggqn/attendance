@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { supabase } from "@/supabase";
 import type { AttendanceRecord, AttendanceStats, ChartData } from "@/types";
-import dayjs from "dayjs";
+// import dayjs from "dayjs"; // 暂时未使用
 
 export const useAttendanceStore = defineStore("attendance", () => {
   // 考勤记录列表
@@ -37,7 +37,7 @@ export const useAttendanceStore = defineStore("attendance", () => {
 
   // ===== 关键：添加记录到 Supabase =====
   const addRecord = async (record: Omit<AttendanceRecord, "id">) => {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("attendance_records")
       .insert({
         employee_name: record.employeeName,
