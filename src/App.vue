@@ -1,58 +1,81 @@
 <template>
   <div class="attendance-system">
-    <!-- 顶部导航 -->
-    <header class="header">
-      <div class="header-content">
-        <div class="logo">
-          <span class="logo-icon">📅</span>
-          <h1 class="logo-text">考勤管理系统</h1>
+    <!-- 未登录：显示登录页 -->
+    <Login v-if="!userStore.isLoggedIn" />
+    
+    <!-- 已登录：显示考勤系统 -->
+    <template v-else>
+      <!-- 顶部导航 -->
+      <header class="header">
+        <div class="header-content">
+          <div class="logo">
+            <span class="logo-icon">📅</span>
+            <h1 class="logo-text">考勤管理系统</h1>
+          </div>
+          
+          <nav class="nav">
+            <button 
+              v-for="tab in tabs" 
+              :key="tab.key"
+              :class="['nav-btn', { active: currentTab === tab.key }]"
+              @click="currentTab = tab.key"
+            >
+              {{ tab.label }}
+            </button>
+          </nav>
+
+          <!-- 用户信息 -->
+          <div class="user-info">
+            <img 
+              :src="userStore.currentUser?.avatar" 
+              alt="avatar" 
+              class="user-avatar"
+            />
+            <div class="user-meta">
+              <span class="user-name">{{ userStore.currentUser?.nickname || userStore.currentUser?.username }}</span>
+              <span v-if="userStore.isAdmin" class="user-role">管理员</span>
+            </div>
+            <button class="btn-logout" @click="handleLogout" title="退出登录">
+              🚪
+            </button>
+          </div>
         </div>
-        <nav class="nav">
-          <button 
-            v-for="tab in tabs" 
-            :key="tab.key"
-            :class="['nav-btn', { active: currentTab === tab.key }]"
-            @click="currentTab = tab.key"
-          >
-            {{ tab.label }}
-          </button>
-        </nav>
-      </div>
-    </header>
+      </header>
 
-    <!-- 主内容区 -->
-    <main class="main-content">
-      <!-- 考勤打卡 -->
-      <section v-show="currentTab === 'record'" class="section">
-        <RecordForm />
-      </section>
+      <!-- 主内容区 -->
+      <main class="main-content">
+        <section v-show="currentTab === 'record'" class="section">
+          <RecordForm />
+        </section>
 
-      <!-- 数据表格 -->
-      <section v-show="currentTab === 'table'" class="section">
-        <DataTable />
-      </section>
+        <section v-show="currentTab === 'table'" class="section">
+          <DataTable />
+        </section>
 
-      <!-- 分析图表 -->
-      <section v-show="currentTab === 'chart'" class="section">
-        <ChartAnalysis />
-      </section>
-    </main>
+        <section v-show="currentTab === 'chart'" class="section">
+          <ChartAnalysis />
+        </section>
+      </main>
 
-    <!-- 底部版权 -->
-    <footer class="footer">
-      <p>© 2024 考勤管理系统 - Made with Vue 3 + TypeScript + Less</p>
-    </footer>
+      <!-- 底部版权 -->
+      <footer class="footer">
+        <p>© 2024 考勤王朝 - 欢迎回来，{{ userStore.currentUser?.nickname || userStore.currentUser?.username }} 👑</p>
+      </footer>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useAttendanceStore } from '@/stores/attendance';
+import { useUserStore } from '@/stores/user';
+import Login from '@/components/Login.vue';
 import RecordForm from '@/components/RecordForm.vue';
 import DataTable from '@/components/DataTable.vue';
 import ChartAnalysis from '@/components/ChartAnalysis.vue';
+import { useAttendanceStore } from '@/stores/attendance';
 
-const store = useAttendanceStore();
+const userStore = useUserStore();
+const attendanceStore = useAttendanceStore();
 
 const tabs = [
   { key: 'record', label: '📝 考勤打卡' },
@@ -62,10 +85,20 @@ const tabs = [
 
 const currentTab = ref('record');
 
-// 初始化示例数据
+// 页面加载时检查登录状态
 onMounted(() => {
-  store.fetchRecords()
+  userStore.checkLoginStatus();
+  if (userStore.isLoggedIn) {
+    attendanceStore.fetchRecords();
+  }
 });
+
+const handleLogout = () => {
+  if (confirm('确定要退出登录吗？')) {
+    userStore.logout();
+    currentTab.value = 'record'; // 重置标签页
+  }
+};
 </script>
 
 <style scoped lang="less">
@@ -135,6 +168,53 @@ onMounted(() => {
   }
 }
 
+// 用户信息
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .user-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .user-role {
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+  }
+
+  .btn-logout {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
 // 主内容区
 .main-content {
   flex: 1;
@@ -184,6 +264,12 @@ onMounted(() => {
   .nav {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .user-info {
+    .user-meta {
+      display: none;
+    }
   }
 
   .main-content {

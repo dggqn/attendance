@@ -126,8 +126,8 @@ const form = reactive({
   remark: ''
 });
 
-const handleSubmit = () => {
-  store.addRecord({ ...form });
+const handleSubmit = async () => {
+  await store.addRecord({ ...form });
   alert('考勤记录提交成功！');
   handleReset();
 };
