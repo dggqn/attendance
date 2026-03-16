@@ -113,11 +113,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useAttendanceStore } from '@/stores/attendance';
-import { useUserStore } from '@/stores/user';
 import dayjs from 'dayjs';
 
 const attendanceStore = useAttendanceStore();
-const userStore = useUserStore();
 
 const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
 const currentYear = ref(dayjs().year());
@@ -184,13 +182,6 @@ const canAddRecord = computed(() => {
 
 // 加载当前月的考勤数据
 const loadMonthData = () => {
-  const startOfMonth = dayjs(new Date(currentYear.value, currentMonth.value, 1))
-    .startOf('month')
-    .format('YYYY-MM-DD');
-  const endOfMonth = dayjs(new Date(currentYear.value, currentMonth.value, 1))
-    .endOf('month')
-    .format('YYYY-MM-DD');
-
   // 这里可以优化为按月份查询，目前先加载全部
   attendanceStore.fetchRecords();
 };

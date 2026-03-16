@@ -172,10 +172,6 @@ import { useLeaveRequestStore } from '@/stores/leaveRequest';
 import AttendanceCalendar from './AttendanceCalendar.vue';
 import dayjs from 'dayjs';
 
-const props = defineProps<{
-  currentTab: string;
-}>();
-
 const emit = defineEmits<{
   (e: 'change-tab', tab: string): void;
 }>();

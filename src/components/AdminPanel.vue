@@ -209,7 +209,7 @@ const updateUserRole = async (userId: string, role: UserRole) => {
 
 // 更新用户部门
 const updateUserDept = async (userId: string, departmentId: string) => {
-  const success = await userStore.updateUser(userId, { departmentId: departmentId || null });
+  const success = await userStore.updateUser(userId, { departmentId: departmentId || undefined });
   if (!success) {
     alert('更新部门失败');
     await loadUsers(); // 刷新

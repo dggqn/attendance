@@ -8,6 +8,8 @@ export interface AttendanceRecord {
   checkOut: string;
   status: AttendanceStatus;
   remark?: string;
+  userId?: string;
+  departmentId?: string;
 }
 
 // 考勤状态

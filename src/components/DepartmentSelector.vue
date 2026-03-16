@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 
 const props = defineProps<{
@@ -52,6 +52,13 @@ const emit = defineEmits<{
 }>();
 
 const userStore = useUserStore();
+
+// 监听 show 变化，当弹窗显示时刷新部门列表
+watch(() => props.show, (newVal) => {
+  if (newVal) {
+    userStore.fetchDepartments();
+  }
+});
 const selectedDept = ref('');
 const saving = ref(false);
 

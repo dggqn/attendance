@@ -194,6 +194,7 @@ const handleRegister = async () => {
   const success = await userStore.register({
     username: registerForm.username,
     password: registerForm.password,
+    confirmPassword: registerForm.confirmPassword,
     nickname: registerForm.nickname,
   });
   

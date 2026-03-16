@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import type { User, LoginForm, UserRole } from '@/types/user';
+import type { User, UserRole, LoginForm, RegisterForm } from '@/types/user';
 import { canManageAll, canManageDepartment, canViewAllRecords } from '@/types/user';
 import { supabase } from '@/supabase';
 
@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user', () => {
   const canViewAllRecordsData = computed(() => canViewAllRecords(currentUser.value?.role as UserRole));
 
   // ===== 登录 =====
-  const login = async (form): Promise<boolean> => {
+  const login = async (form: LoginForm): Promise<boolean> => {
     loading.value = true;
     error.value = '';
 
@@ -123,7 +123,7 @@ export const useUserStore = defineStore('user', () => {
   };
 
   // ===== 注册 =====
-  const register = async (form): Promise<boolean> => {
+  const register = async (form: RegisterForm): Promise<boolean> => {
     loading.value = true;
     error.value = '';
 
