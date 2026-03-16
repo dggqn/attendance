@@ -2,6 +2,14 @@
   <div class="chart-analysis">
     <h2 class="chart-title">📊 考勤数据分析</h2>
     
+    <!-- 空状态提示 -->
+    <div v-if="store.records.length === 0" class="empty-state">
+      <div class="empty-icon">📊</div>
+      <div class="empty-title">暂无数据</div>
+      <div class="empty-desc">请先录入考勤记录，图表将自动展示统计分析</div>
+    </div>
+    
+    <template v-else>
     <div class="charts-grid">
       <!-- 饼图 - 考勤状态分布 -->
       <div class="chart-card">
@@ -44,6 +52,7 @@
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
@@ -271,6 +280,28 @@ const lineOption = computed(() => {
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.empty-desc {
+  font-size: 14px;
+  color: #9ca3af;
 }
 
 .chart-title {

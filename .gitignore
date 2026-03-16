@@ -38,3 +38,12 @@ lerna-debug.log*
 
 # Test coverage
 coverage
+
+# Documentation files (说明类文件)
+*.md
+
+# Database migration files (数据库操作记录)
+supabase/migrations/
+
+# Project logs and progress docs (项目进度文档)
+public/logTxt/

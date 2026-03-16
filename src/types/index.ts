@@ -30,3 +30,8 @@ export interface ChartData {
   lateCount: number[];
   absentCount: number[];
 }
+
+// 重新导出用户和部门类型
+export * from './user';
+export * from './department';
+export * from './leaveRequest';
