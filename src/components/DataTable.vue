@@ -1,7 +1,9 @@
 <template>
   <div class="data-table">
     <div class="table-header">
-      <h2 class="table-title">📋 考勤记录表</h2>
+      <h2 class="table-title">
+        {{ userStore.isNormalUser ? '📋 我的考勤记录' : `📋 ${userStore.currentUser?.departmentName || ''}考勤记录` }}
+      </h2>
       <div class="table-actions">
         <input
           v-model="searchKeyword"
@@ -18,7 +20,7 @@
           <option value="leave">请假</option>
         </select>
         <button class="btn-export" @click="handleExport">
-          📥 导出 Excel
+          {{ userStore.isNormalUser ? '📥 导出我的考勤' : `📥 导出${userStore.currentUser?.departmentName || ''}考勤` }}
         </button>
       </div>
     </div>
@@ -96,7 +98,9 @@
             <td :colspan="canDelete ? 9 : 8" class="empty-cell">
               <div class="empty-state">
                 <div class="empty-icon">📋</div>
-                <div class="empty-title">暂无考勤记录</div>
+                <div class="empty-title">
+                  {{ userStore.isNormalUser ? '暂无我的考勤记录' : `暂无${userStore.currentUser?.departmentName || ''}考勤记录` }}
+                </div>
                 <div class="empty-desc">
                   {{ searchKeyword || filterStatus ? '试试调整搜索条件' : '开始记录您的第一条考勤吧' }}
                 </div>

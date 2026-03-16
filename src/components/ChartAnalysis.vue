@@ -1,6 +1,8 @@
 <template>
   <div class="chart-analysis">
-    <h2 class="chart-title">📊 考勤数据分析</h2>
+    <h2 class="chart-title">
+      {{ userStore.isNormalUser ? '📊 我的考勤分析' : `📊 ${userStore.currentUser?.departmentName || ''}考勤分析` }}
+    </h2>
     
     <!-- 空状态提示 -->
     <div v-if="store.records.length === 0" class="empty-state">
@@ -13,7 +15,7 @@
     <div class="charts-grid">
       <!-- 饼图 - 考勤状态分布 -->
       <div class="chart-card">
-        <h3 class="chart-subtitle">考勤状态分布</h3>
+        <h3 class="chart-subtitle">{{ userStore.isNormalUser ? '我的考勤分布' : `${userStore.currentUser?.departmentName || ''}考勤分布` }}</h3>
         <v-chart class="chart" :option="pieOption" autoresize />
       </div>
 
@@ -70,6 +72,7 @@ import {
 } from 'echarts/components';
 import VChart from 'vue-echarts';
 import { useAttendanceStore } from '@/stores/attendance';
+import { useUserStore } from '@/stores/user';
 
 // 注册 ECharts 组件
 use([
@@ -85,6 +88,7 @@ use([
 ]);
 
 const store = useAttendanceStore();
+const userStore = useUserStore();
 
 // 计算比率
 const attendanceRate = computed(() => {

@@ -1,7 +1,7 @@
 <template>
   <div class="attendance-calendar">
     <div class="calendar-header">
-      <h2 class="section-title">📅 当月考勤</h2>
+      <h2 class="section-title">{{ userStore.isNormalUser ? '📅 我的考勤日历' : `📅 ${userStore.currentUser?.departmentName || ''}考勤日历` }}</h2>
       <div class="month-selector">
         <button class="btn-nav" @click="prevMonth">◀</button>
         <span class="current-month">{{ currentYear }}年 {{ currentMonth + 1 }}月</span>
@@ -113,9 +113,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useAttendanceStore } from '@/stores/attendance';
+import { useUserStore } from '@/stores/user';
 import dayjs from 'dayjs';
 
 const attendanceStore = useAttendanceStore();
+const userStore = useUserStore();
 
 const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
 const currentYear = ref(dayjs().year());

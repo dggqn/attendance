@@ -127,11 +127,14 @@ const currentTab = ref('home');
 
 // 根据权限显示不同的导航
 const visibleTabs = computed(() => {
+  const deptName = userStore.currentUser?.departmentName || '';
+  const isPersonal = userStore.isNormalUser;
+  
   const tabs = [
     { key: 'home', label: '🏠 首页' },
-    { key: 'record', label: '📝 考勤打卡' },
-    { key: 'table', label: '📋 数据表单' },
-    { key: 'chart', label: '📊 分析图表' },
+    { key: 'record', label: isPersonal ? '📝 我的考勤' : `📝 ${deptName}考勤` },
+    { key: 'table', label: isPersonal ? '📋 我的记录' : `📋 ${deptName}记录` },
+    { key: 'chart', label: isPersonal ? '📊 我的统计' : `📊 ${deptName}统计` },
     { key: 'leave', label: '📄 请假/补卡' },
   ];
 

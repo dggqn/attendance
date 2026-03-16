@@ -17,7 +17,7 @@
     <!-- 部门管理（超管） -->
     <div v-if="currentTab === 'departments' && userStore.isSuperAdmin" class="tab-content">
       <div class="content-header">
-        <h3>部门列表</h3>
+        <h3>全部部门</h3>
         <button class="btn-primary" @click="showAddDept = true">+ 新增部门</button>
       </div>
 
@@ -38,7 +38,7 @@
     <div v-if="currentTab === 'users'" class="tab-content">
       <div class="content-header">
         <h3>
-          {{ userStore.isSuperAdmin ? '全部用户' : '部门成员' }}
+          {{ userStore.isSuperAdmin ? '全部用户' : `${userStore.currentUser?.departmentName || ''}成员` }}
           <span class="user-count">({{ users.length }}人)</span>
         </h3>
       </div>

@@ -2,7 +2,7 @@
   <div class="leave-request-list">
     <div class="list-header">
       <h2 class="section-title">
-        {{ userStore.isAdmin ? '📋 请假/补卡审批' : '📋 我的申请' }}
+        {{ userStore.isAdmin ? `📋 ${userStore.currentUser?.departmentName || ''}请假/补卡审批` : '📋 我的申请' }}
       </h2>
       <div class="header-actions">
         <!-- 统计卡片 -->
@@ -19,7 +19,7 @@
 
     <!-- 批量操作栏（管理员） -->
     <div v-if="userStore.isAdmin && selectedIds.length > 0" class="batch-actions">
-      <span class="batch-info">已选择 {{ selectedIds.length }} 条申请</span>
+      <span class="batch-info">已选择 {{ selectedIds.length }} 条{{ userStore.currentUser?.departmentName || '' }}申请</span>
       <button class="btn-batch-approve" @click="handleBatchApprove('approved')">
         ✓ 批量通过
       </button>

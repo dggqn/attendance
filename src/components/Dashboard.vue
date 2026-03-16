@@ -75,7 +75,7 @@
 
     <!-- 本月统计 -->
     <div class="section">
-      <h2 class="section-title">📊 本月统计</h2>
+      <h2 class="section-title">{{ userStore.isNormalUser ? '📊 我的本月统计' : `📊 ${userStore.currentUser?.departmentName || ''}本月统计` }}</h2>
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon bg-blue">📅</div>
@@ -111,7 +111,7 @@
     <!-- 待审批提醒（仅管理员/超管） -->
     <div v-if="userStore.isAdmin" class="section">
       <h2 class="section-title">
-        🔔 待审批
+        🔔 待我审批
         <span v-if="leaveRequestStore.stats.pending > 0" class="badge">
           {{ leaveRequestStore.stats.pending }}
         </span>
